@@ -66,3 +66,7 @@ body{
 .message-data{
   word-break:break-word;
 }
+.giphy{
+  max-width: 300px;
+  height: auto;
+}

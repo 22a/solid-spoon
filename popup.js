@@ -86,6 +86,7 @@ function onJoined(channel, host, username) {
   return function() {
     addMessage('<h3 class="centered">Welcome to ' + host + ' chat!</h3>');
     var messageInput = document.getElementById('message');
+    messageInput.placeholder = '@' + username + ':';
     messageInput.addEventListener('keypress', function(e) {
       var input = messageInput.value;
       if (e.keyCode === 13 && input && input.length > 0) {
