@@ -20,6 +20,6 @@
     "default_popup": "popup.html"
   },
   "permissions": [
-    "storage"
+    "tabs"
   ]
 }
