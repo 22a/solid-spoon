@@ -19,7 +19,7 @@ function gifString(payload) {
 
 function messageString(payload) {
   var colour = getColourString(payload.username);
-  return '<p>[' + moment().format('HH:mm') + ']<strong class="message-username" style="color: #' + colour + '">' + payload.username + '</strong>' + payload.message + '</p>';
+  return '<p><table class="message-table"><tr><td class="message-meta">[' + moment().format('HH:mm') + ']<strong class="message-username" style="color: #' + colour + '">' + payload.username + '</strong></td><td class="message-data">' + payload.message + '</td></tr></p>';
 }
 
 document.addEventListener('DOMContentLoaded', function() {
