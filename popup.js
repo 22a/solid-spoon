@@ -20,7 +20,7 @@ function formatTime() {
 }
 
 function gifString(payload) {
-  return '<p>[' + formatTime() + ']<strong class="message-username">giphy</strong><img id="gif-' + messageCount + '" class="giphy" src="' + payload.url + '"></p>';
+  return '<p><table><tr><td class="message-meta">[' + formatTime() + ']<strong class="message-username">giphy</strong></td><td><img id="gif-' + messageCount + '" class="giphy" src="' + payload.url + '"></td></tr></table></p>';
 }
 
 function messageString(payload) {
