@@ -1,5 +1,7 @@
+var messsageContainer;
+var messageCount = 0;
+
 function addMessage(html){
-  var messageContainer = document.getElementById('messages');
   messageContainer.innerHTML += html;
   messageContainer.scrollTop = messageContainer.scrollHeight;
 }
@@ -13,16 +15,25 @@ function getColourString(username) {
   return userColours[username];
 }
 
+function formatTime() {
+  return moment().format('HH:mm');
+}
+
 function gifString(payload) {
-  return '<p>[' + moment().format('HH:mm') + ']<strong class="message-username">giphy</strong><img class="giphy" src="' + payload.url + '"></p>';
+  return '<p>[' + formatTime() + ']<strong class="message-username">giphy</strong><img id="gif-' + messageCount + '" class="giphy" src="' + payload.url + '"></p>';
 }
 
 function messageString(payload) {
   var colour = getColourString(payload.username);
-  return '<p>[' + moment().format('HH:mm') + ']<strong class="message-username" style="color: #' + colour + '">' + payload.username + '</strong>' + payload.message + '</p>';
+  return '<p>[' + formatTime() + ']<strong class="message-username" style="color: #' + colour + '">' + payload.username + '</strong>' + payload.message + '</p>';
+}
+
+function notFoundString(payload) {
+  return '<p>[' + formatTime() + ']<strong class="message-username">giphy</strong>GIF not found: ' + payload.term + '</p>';
 }
 
 document.addEventListener('DOMContentLoaded', function() {
+  messageContainer = document.getElementById('messages');
   var socket = new Phoenix.Socket("ws://backspoon.cbrenn.xyz/socket", {});
   socket.connect();
   chrome.tabs.getSelected(null, function(tab) {
@@ -38,14 +49,33 @@ document.addEventListener('DOMContentLoaded', function() {
 
     channel.on("new_gif", function(payload) {
       addMessage(gifString(payload));
+      document.getElementById('gif-' + messageCount).addEventListener('load', function() {
+        messageContainer.scrollTop = messageContainer.scrollHeight;
+        messageCount++;
+      });
     });
 
-    var userInput = document.getElementById('username');
-    userInput.addEventListener('keypress', function(e) {
-      if (e.keyCode === 13) {
+    channel.on("gif_not_found", function(payload) {
+      addMessage(notFoundString(payload));
+    });
+
+
+    chrome.storage.local.get('username', function(result) {
+      if (result.username) {
         document.getElementById('tint').className += " evanesco";
         document.getElementById('input-container').style.zIndex = "1";
-        channel.join().receive("ok", onJoined(channel, host, userInput.value));
+        channel.join().receive("ok", onJoined(channel, host, result.username));
+      } else {
+        var userInput = document.getElementById('username');
+        userInput.addEventListener('keypress', function(e) {
+          var username = userInput.value;
+          if (e.keyCode === 13 && username && username.length > 0) {
+            chrome.storage.local.set({username: username});
+            document.getElementById('tint').className += " evanesco";
+            document.getElementById('input-container').style.zIndex = "1";
+            channel.join().receive("ok", onJoined(channel, host, username));
+          }
+        });
       }
     });
   });
