@@ -6,9 +6,11 @@ document.addEventListener('DOMContentLoaded', function() {
     dummy.href = tab.url;
     var host = dummy.hostname;
 
+    var messageContainer = document.getElementById('messages');
     var channel = socket.channel("chat:" + host);
     channel.on("new_message", function(payload) {
-      console.log("[" + payload.username + "] " + payload.message);
+      messageContainer.innerHTML += '<p><strong class="message-username">' + payload.username + '</strong>' + payload.message + '</p>';
+      messageContainer.scrollTop = messageContainer.scrollHeight;
     });
 
     var connected = false;
@@ -19,6 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
         username = userInput.value;
         channel.join();
         connected = true;
+        document.getElementById('tint').className += " evanesco";
       }
     });
 
@@ -26,6 +29,6 @@ document.addEventListener('DOMContentLoaded', function() {
       if (connected) {
         channel.push("new_message", {host: host, username: username, message: "POW"});
       }
-    }, 1000);
+    }, 500);
   });
 });

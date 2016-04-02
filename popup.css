@@ -8,9 +8,32 @@ body{
   padding: 0;
   margin: 0;
 }
+.tint{
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.12);
+}
+.username-container{
+  width: 200px;
+  height: 35px;
+  position:absolute;
+  left:0;
+  right:0;
+  top:0;
+  bottom:0;
+  margin:auto;
+}
+.evanesco{
+  display: none;
+}
 .messages{
   width: 100%;
   height: 95%;
+  overflow-y: scroll;
+}
+.message-username{
+  padding-left: 5px;
+  padding-right: 5px;
 }
 .input-container{
   width: 100%;
@@ -18,6 +41,7 @@ body{
   margin-left: -4px;
   position: fixed;
   bottom: 0;
+  z-index: -1;
 }
 .input{
   width: 100%;
