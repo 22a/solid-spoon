@@ -38,7 +38,7 @@ body{
 .input-container{
   width: 100%;
   height: 5%;
-  margin-left: -4px;
+  margin-left: -2px;
   position: fixed;
   bottom: 0;
   z-index: -1;
@@ -53,4 +53,7 @@ body{
   outline: none;
   border-color: #9ecaed;
   box-shadow: 0 0 10px #9ecaed;
+}
+.centered {
+  text-align: center;
 }
