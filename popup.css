@@ -1,0 +1,32 @@
+html{
+  height: 600px;
+  width: 800px;
+}
+body{
+  height: 100%;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+}
+.messages{
+  width: 100%;
+  height: 95%;
+}
+.input-container{
+  width: 100%;
+  height: 5%;
+  margin-left: -4px;
+  position: fixed;
+  bottom: 0;
+}
+.input{
+  width: 100%;
+  height: 100%;
+  outline: none;
+  border: 1px solid #dadada;
+}
+.input:focus {
+  outline: none;
+  border-color: #9ecaed;
+  box-shadow: 0 0 10px #9ecaed;
+}
