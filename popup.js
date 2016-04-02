@@ -4,8 +4,22 @@ function addMessage(html){
   messageContainer.scrollTop = messageContainer.scrollHeight;
 }
 
-function messageString(payload){
-  return '<p>[' + moment().format('HH:mm') + ']<strong class="message-username">' + payload.username + '</strong>' + payload.message + '</p>';
+var userColours = {};
+
+function getColourString(username) {
+  if (!userColours[username]) {
+    userColours[username] = Math.floor(Math.random() * 16777215).toString(16);
+  }
+  return userColours[username];
+}
+
+function gifString(payload) {
+  return '<p>[' + moment().format('HH:mm') + ']<strong class="message-username">giphy</strong><img class="giphy" src="' + payload.url + '"></p>';
+}
+
+function messageString(payload) {
+  var colour = getColourString(payload.username);
+  return '<p>[' + moment().format('HH:mm') + ']<strong class="message-username" style="color: #' + colour + '">' + payload.username + '</strong>' + payload.message + '</p>';
 }
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -20,6 +34,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     channel.on("new_message", function(payload) {
       addMessage(messageString(payload));
+    });
+
+    channel.on("new_gif", function(payload) {
+      addMessage(gifString(payload));
     });
 
     var userInput = document.getElementById('username');
@@ -40,7 +58,7 @@ function onJoined(channel, host, username) {
     messageInput.addEventListener('keypress', function(e) {
       var input = messageInput.value;
       if (e.keyCode === 13 && input && input.length > 0) {
-        channel.push("new_message", {host: host, username: username, message: messageInput.value})
+        channel.push("new_message", {host: host, username: username, message: messageInput.value});
         messageInput.value = '';
       }
     });
